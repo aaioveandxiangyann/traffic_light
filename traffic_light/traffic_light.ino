@@ -97,7 +97,19 @@ void delay1(unsigned long interval){
             digitalWrite(YELLOW1,1);
              temp = 3000- temp; 
              delay(temp);
-            }
+            }else if(digitalRead(RED1)==1){
+               temp = 3000- temp;
+               digitalWrite(PEDGREEN1,1);digitalWrite(PEDGREEN2,1);delay(3000);
+               for(int j=0;j<3;j++){
+                  digitalWrite(PEDGREEN1,0);digitalWrite(PEDGREEN2,0);delay(500);
+                  digitalWrite(PEDGREEN1,1);digitalWrite(PEDGREEN2,1);delay(500);
+             }
+                 digitalWrite(GREEN2,1);delay(5000);digitalWrite(GREEN2,0);digitalWrite(YELLOW2,1);delay(3000);digitalWrite(YELLOW2,0);digitalWrite(RED2,1);delay(1000);
+                 digitalWrite(GREEN1,1);delay(5000);digitalWrite(GREEN1,0);digitalWrite(YELLOW1,1);delay(5000);digitalWrite(YELLOW1,0);
+                 temp = 3000- temp; 
+                 delay(temp);
+                 digitalWrite(RED1,1);
+              }
           digitalWrite(YELLOW1,1);digitalWrite(YELLOW2,1);delay(1000);
           digitalWrite(YELLOW1,0);digitalWrite(YELLOW2,0);
           digitalWrite(RED1,1);digitalWrite(RED2,1);delay(1000);
