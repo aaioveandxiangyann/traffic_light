@@ -1,4 +1,4 @@
-#include <SPI.h> //nfc...
+#include <SPI.h> //nfc declaration...
 #include <MFRC522.h> /
 #define SS_PIN 10
 #define RST_PIN 9
@@ -64,6 +64,8 @@ void delay1(unsigned long interval){
         //Serial.print(mfrc522.uid.uidByte[i], HEX);
         if(mfrc522.uid.uidByte[0]!=0){
           digitalWrite(GREEN1,0);digitalWrite(GREEN2,0);digitalWrite(YELLOW1,0);digitalWrite(YELLOW2,0);//todo: chg direct red to time-based turn red
+          digitalWrite(YELLOW1,1);digitalWrite(YELLOW2,1);delay(1000);
+          digitalWrite(YELLOW1,0);digitalWrite(YELLOW2,0);
           digitalWrite(RED1,1);digitalWrite(RED2,1);delay(1000);
           digitalWrite(PEDRED1,0);digitalWrite(PEDRED2,0);
           digitalWrite(PEDGREEN1,1);digitalWrite(PEDGREEN2,1);delay(3000);
