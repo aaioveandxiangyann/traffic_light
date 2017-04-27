@@ -41,9 +41,9 @@ void delay1(unsigned long interval){
     //Serial.print(interval);Serial.print("\t");
     //Serial.print(previousMillis);Serial.print("\t");
     //Serial.print(currentMillis - previousMillis);Serial.println();
-    //Serial.print("RYB(PR,PB)1:");Serial.print(digitalRead(RED1));Serial.print(digitalRead(YELLOW1));Serial.print(digitalRead(GREEN1));Serial.print(digitalRead(PEDRED1));Serial.print(digitalRead(PEDGREEN1));Serial.print("\t");
-    //Serial.print("RYB(PR,PB)2:");Serial.print(digitalRead(RED2));Serial.print(digitalRead(YELLOW2));Serial.print(digitalRead(GREEN2));Serial.print(digitalRead(PEDRED2));Serial.print(digitalRead(PEDGREEN2));
-    //Serial.println();
+    Serial.print("RYG(PR,PG)1:");Serial.print(digitalRead(RED1));Serial.print(digitalRead(YELLOW1));Serial.print(digitalRead(GREEN1));Serial.print(digitalRead(PEDRED1));Serial.print(digitalRead(PEDGREEN1));Serial.print("\t");
+    Serial.print("RYG(PR,PG)2:");Serial.print(digitalRead(RED2));Serial.print(digitalRead(YELLOW2));Serial.print(digitalRead(GREEN2));Serial.print(digitalRead(PEDRED2));Serial.print(digitalRead(PEDGREEN2));
+    Serial.println();
     //if(digitalRead(GREEN1)==1)Serial.print("Green1 is green!");//判斷式
     
     currentMillis = millis();
@@ -75,41 +75,55 @@ void delay1(unsigned long interval){
              digitalWrite(PEDRED1,0);digitalWrite(PEDRED2,0);
              digitalWrite(PEDGREEN1,1);digitalWrite(PEDGREEN2,1);delay(3000);
              for(int j=0;j<3;j++){
-            digitalWrite(PEDGREEN1,0);digitalWrite(PEDGREEN2,0);delay(500);
-            digitalWrite(PEDGREEN1,1);digitalWrite(PEDGREEN2,1);delay(500);
+                digitalWrite(PEDGREEN1,0);digitalWrite(PEDGREEN2,0);delay(500);
+                digitalWrite(PEDGREEN1,1);digitalWrite(PEDGREEN2,1);delay(500);
             }
-             digitalWrite(GREEN2,1);delay(5000);  digitalWrite(GREEN2,0); digitalWrite(YELLOW2,1);delay(3000); digitalWrite(YELLOW2,0);
-             digitalWrite(RED2,1);delay(1000); 
-             digitalWrite(GREEN1,1);
+             digitalWrite(PEDGREEN1,0);digitalWrite(PEDGREEN2,0);
+             digitalWrite(PEDRED1,1);digitalWrite(PEDRED2,1);delay(1000);
+             digitalWrite(RED2,0);digitalWrite(GREEN2,1);delay(5000);digitalWrite(GREEN2,0); digitalWrite(YELLOW2,1);delay(1000); digitalWrite(YELLOW2,0);
+             digitalWrite(RED2,1);delay(3000);
+             digitalWrite(RED1,0);digitalWrite(GREEN1,1);
              temp = 5000 - temp; 
              delay(temp);
-            }else if(digitalRead(YELLOW1)==1){
+          }
+          else if(digitalRead(YELLOW1)==1){
             temp = currentMillis - previousMillis;
             temp = 3000 - temp;
-            digitalWrite(RED1,1);delay(3000);
+             delay(temp);
+             digitalWrite(YELLOW1,0);digitalWrite(RED1,1);delay(3000);
+             digitalWrite(PEDRED1,0);digitalWrite(PEDRED2,0);
              digitalWrite(PEDGREEN1,1);digitalWrite(PEDGREEN2,1);delay(3000);
              for(int j=0;j<3;j++){
             digitalWrite(PEDGREEN1,0);digitalWrite(PEDGREEN2,0);delay(500);
             digitalWrite(PEDGREEN1,1);digitalWrite(PEDGREEN2,1);delay(500);
             }
-            digitalWrite(GREEN2,1);delay(5000);digitalWrite(GREEN2,0);digitalWrite(YELLOW2,1);delay(3000);digitalWrite(YELLOW2,0);
-            digitalWrite(RED2,1);delay(1000); digitalWrite(GREEN1,1);delay(5000);digitalWrite(GREEN1,0);  
+            digitalWrite(PEDGREEN1,0);digitalWrite(PEDGREEN2,0);
+            digitalWrite(PEDRED1,1);digitalWrite(PEDRED2,1);delay(1000);
+            digitalWrite(RED2,0);
+            digitalWrite(GREEN2,1);delay(5000);digitalWrite(GREEN2,0);digitalWrite(YELLOW2,1);delay(1000);digitalWrite(YELLOW2,0);
+            digitalWrite(RED2,1);delay(3000);digitalWrite(RED1,0);digitalWrite(GREEN1,1);delay(5000);digitalWrite(GREEN1,0);  
             digitalWrite(YELLOW1,1);
              temp = 3000- temp; 
              delay(temp);
-            }else if(digitalRead(RED1)==1){
+            }
+          else if(digitalRead(RED1)==1){
                temp = 3000- temp;
-               digitalWrite(PEDGREEN1,1);digitalWrite(PEDGREEN2,1);delay(3000);
+                delay(temp);
+                digitalWrite(PEDRED1,0);digitalWrite(PEDRED2,0);
+                digitalWrite(PEDGREEN1,1);digitalWrite(PEDGREEN2,1);delay(3000);
                for(int j=0;j<3;j++){
                   digitalWrite(PEDGREEN1,0);digitalWrite(PEDGREEN2,0);delay(500);
                   digitalWrite(PEDGREEN1,1);digitalWrite(PEDGREEN2,1);delay(500);
-             }
-                 digitalWrite(GREEN2,1);delay(5000);digitalWrite(GREEN2,0);digitalWrite(YELLOW2,1);delay(3000);digitalWrite(YELLOW2,0);digitalWrite(RED2,1);delay(1000);
-                 digitalWrite(GREEN1,1);delay(5000);digitalWrite(GREEN1,0);digitalWrite(YELLOW1,1);delay(5000);digitalWrite(YELLOW1,0);
-                 temp = 3000- temp; 
-                 delay(temp);
-                 digitalWrite(RED1,1);
-              }else if(digitalRead(GREEN2)==1){                                                                                                                   //綠燈流程
+               }
+                digitalWrite(PEDGREEN1,0);digitalWrite(PEDGREEN2,0);
+                digitalWrite(PEDRED1,1);digitalWrite(PEDRED2,1);delay(1000);
+                digitalWrite(RED2,0);
+                digitalWrite(GREEN2,1);delay(5000);digitalWrite(GREEN2,0);digitalWrite(YELLOW2,1);delay(3000);digitalWrite(YELLOW2,0);digitalWrite(RED2,1);delay(1000);digitalWrite(RED1,0);
+                digitalWrite(GREEN1,1);delay(5000);digitalWrite(GREEN1,0);digitalWrite(YELLOW1,1);delay(5000);digitalWrite(YELLOW1,0);
+               temp = 3000- temp; 
+               delay(temp);
+               digitalWrite(RED1,1);
+          }/*else if(digitalRead(GREEN2)==1){                                                                                                                   //綠燈流程
                   temp = currentMillis - previousMillis;
                   temp = 5000 - temp;
                    delay(temp);
@@ -151,8 +165,8 @@ void delay1(unsigned long interval){
                  temp = 3000- temp; 
                  delay(temp);
                  digitalWrite(RED2,1);
-            }
-          digitalWrite(YELLOW1,1);digitalWrite(YELLOW2,1);delay(1000);
+            } */
+          /*digitalWrite(YELLOW1,1);digitalWrite(YELLOW2,1);delay(1000);
           digitalWrite(YELLOW1,0);digitalWrite(YELLOW2,0);
           digitalWrite(RED1,1);digitalWrite(RED2,1);delay(1000);
           digitalWrite(PEDRED1,0);digitalWrite(PEDRED2,0);
@@ -162,7 +176,7 @@ void delay1(unsigned long interval){
             digitalWrite(PEDGREEN1,1);digitalWrite(PEDGREEN2,1);delay(500);
           }
           digitalWrite(PEDGREEN1,0);digitalWrite(PEDGREEN2,0);
-          digitalWrite(PEDRED1,1);digitalWrite(PEDRED2,1);delay(1000);
+          digitalWrite(PEDRED1,1);digitalWrite(PEDRED2,1);delay(1000);*/
         }
         mfrc522.uid.uidByte[i]=0;
       } 
