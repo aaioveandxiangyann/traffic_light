@@ -1,5 +1,6 @@
-﻿TODO:<br />
- -已更正第一組綠燈變換的bug<br />
+Changelog: 
+加了一個狀態檢查函數(status)判斷紅燈<br /><br />
+
+TODO:<br />
  -wait for wifi from teacher<br />
- -after ped red if prev yellow returns to yellow instead reset state, fix needed.<br />
  -database wow wow
