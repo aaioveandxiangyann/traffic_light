@@ -4,40 +4,65 @@
 #define RST_PIN 9
 MFRC522 mfrc522(SS_PIN, RST_PIN); //...until here
 
-int RED1 = 8, YELLOW1 = 7, GREEN1 = 6, PEDRED1 = 5, PEDGREEN1 = 4, RED2 = 18, YELLOW2 = 17, GREEN2 = 16, PEDRED2 = 15, PEDGREEN2 = 14, i = 1, status=0;
+int RED1 = 8, YELLOW1 = 7, GREEN1 = 6, PEDRED1 = 5, PEDGREEN1 = 4, RED2 = 18, YELLOW2 = 17, GREEN2 = 16, PEDRED2 = 15, PEDGREEN2 = 14, j = 0 , i = 0 , status=0;
+int sequence=0;
+int queue[4]={0,0,0,0}, prev_queue[4], allled[10]={RED1,YELLOW1,GREEN1,PEDRED1,PEDGREEN1,RED2,YELLOW2,GREEN2,PEDRED2,PEDGREEN2};
 unsigned long previousMillis = 0;
 unsigned long currentMillis = millis();
 unsigned long temp = 0; //to store transition remaining time
-//unsigned long interval = 1000;
-void setup()
-{
+unsigned long interval = 1000;
+
+void setup(){
     Serial.begin(9600);
     SPI.begin(); // Init SPI bus
     mfrc522.PCD_Init(); // Init MFRC522 card
-    pinMode(RED1, OUTPUT);
-    pinMode(YELLOW1, OUTPUT);
-    pinMode(GREEN1, OUTPUT);
-    pinMode(PEDRED1, OUTPUT);
-    pinMode(PEDGREEN1, OUTPUT);
-    pinMode(RED2, OUTPUT);
-    pinMode(YELLOW2, OUTPUT);
-    pinMode(GREEN2, OUTPUT);
-    pinMode(PEDRED2, OUTPUT);
-    pinMode(PEDGREEN2, OUTPUT);
-    digitalWrite(RED1, 1);
-    digitalWrite(RED2, 1);
-    digitalWrite(PEDRED1, 1);
-    digitalWrite(PEDRED2, 1);
-    digitalWrite(YELLOW1, 0);
-    digitalWrite(YELLOW2, 0);
-    digitalWrite(GREEN1, 0);
-    digitalWrite(GREEN2, 0);
-    delay(1000);
-    digitalWrite(RED1, 0);
-    digitalWrite(GREEN1, 1);
-    delay(5000);
+    for(i=0;i<10;i++)pinMode(allled[i],OUTPUT);
+    for(j=1;j>=0;j--){
+      for(i=0;i<10;i++)digitalWrite(allled[i],j);
+      delay(500);
+    }
 }
-void delay1(unsigned long interval)
+
+void loop(){
+  
+  //change sequence block
+  for(i=0;i<4;i++)prev_queue[i]=queue[i];
+  switch(sequence){
+    case 10:
+      queue[0]=15;queue[1]=18;queue[2]=8;queue[3]=5;break;
+    case 20:
+      queue[0]=14;queue[1]=18;queue[2]=6;queue[3]=5;break;
+    case 30:
+      queue[0]=14;queue[1]=18;queue[2]=7;queue[3]=5;break;
+    case 40:
+      queue[0]=15;queue[1]=18;queue[2]=8;queue[3]=5;break;
+    case 50:
+      queue[0]=15;queue[1]=16;queue[2]=8;queue[3]=4;break;
+    case 60:
+      queue[0]=15;queue[1]=17;queue[2]=8;queue[3]=4;break;
+  }
+  (sequence==60)?sequence=10:sequence+=10;
+  //change sequence block end
+  
+  //check for interrupts
+  //TODO
+  //check for interrupts end
+
+  //display changes
+  for(i=0;i<4;i++)digitalWrite(prev_queue[i], 0);
+  for(i=0;i<4;i++)digitalWrite(queue[i], 1);
+  delay(1000);
+        Serial.print("RYG(PedR,PedG)1:");
+        for(i=0;i<5;i++)Serial.print(digitalRead(allled[i]));
+        Serial.print("\t");
+        Serial.print("RYG(PedR,PedG)2:");
+        for(i=5;i<10;i++)Serial.print(digitalRead(allled[i]));
+        Serial.print(" Sequence");
+        Serial.print(sequence);
+        Serial.println();
+}
+
+/*void delay1(unsigned long interval)
 {
     for (;;) {
         //Serial.print(currentMillis);Serial.print("\t");
@@ -381,5 +406,5 @@ void loop()
         red(i);
         i--;
     }
-}
+}*/
 
