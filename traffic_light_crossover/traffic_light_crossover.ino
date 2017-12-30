@@ -4,9 +4,10 @@
 #define SS_PIN 10
 #define RST_PIN 9
 MFRC522 mfrc522(SS_PIN, RST_PIN); //...until here
+#include "Wire.h"
 
 
-int RED1 = 8, YELLOW1 = 7, GREEN1 = 6, PEDRED1 = 5, PEDGREEN1 = 4, RED2 = 18, YELLOW2 = 17, GREEN2 = 16, PEDRED2 = 15, PEDGREEN2 = 14, j = 0 , i = 0 , interrupt = 0;
+int RED1 = 8, YELLOW1 = 7, GREEN1 = 6, PEDRED1 = 5, PEDGREEN1 = 4, RED2 = 3, YELLOW2 = 17, GREEN2 = 16, PEDRED2 = 15, PEDGREEN2 = 14, j = 0 , i = 0 , interrupt = 0;
 int sequence=0;
 int queue[4]={0,0,0,0}, prev_queue[4], allled[10]={RED1,YELLOW1,GREEN1,PEDRED1,PEDGREEN1,RED2,YELLOW2,GREEN2,PEDRED2,PEDGREEN2};
 unsigned long previousMillis = 0,previousMillis1 = 0;
@@ -14,7 +15,6 @@ unsigned long currentMillis = millis();
 unsigned long temp = 0; //to store transition remaining time
 bool temp2=0; // 判斷新卡是否讀取連續兩次
 unsigned long interval = 1000,cooldown=60000;
-unsigned long interva3,interva4,interva5;
 void setup(){
     Serial.begin(9600);
     SPI.begin(); // Init SPI bus
@@ -58,13 +58,13 @@ void loop(){
     for(i=0;i<4;i++)prev_queue[i]=queue[i];
     switch(sequence){
       case 10:
-        queue[0]=15;queue[1]=18;queue[2]=8;queue[3]=5;interval=1000;break;
+        queue[0]=15;queue[1]=3;queue[2]=8;queue[3]=5;interval=1000;break;
       case 20:
-        queue[0]=14;queue[1]=18;queue[2]=6;queue[3]=5;interval=9000;break;
+        queue[0]=14;queue[1]=3;queue[2]=6;queue[3]=5;interval=9000;break;
       case 30:
-        queue[0]=14;queue[1]=18;queue[2]=7;queue[3]=5;interval=3000;break;
+        queue[0]=14;queue[1]=3;queue[2]=7;queue[3]=5;interval=3000;break;
       case 40:
-        queue[0]=15;queue[1]=18;queue[2]=8;queue[3]=5;interval=1000;break;
+        queue[0]=15;queue[1]=3;queue[2]=8;queue[3]=5;interval=1000;break;
       case 50:
         queue[0]=15;queue[1]=16;queue[2]=8;queue[3]=4;interval=9000;break;
       case 60:
@@ -88,7 +88,6 @@ void loop(){
     Serial.println();
   }else{
     //UID check part 2
-    Serial.println(interval);
     if((temp2==1) && (millis()-previousMillis1 >= cooldown)){
       Serial.println("cooldown"); // Init MFRC522 card
       temp2=0;
@@ -108,6 +107,7 @@ void loop(){
         interrupt = 1;
        //temp2 = !temp2;
       }
+ 
     }
     //UID check part 2 end
     delay(10);
