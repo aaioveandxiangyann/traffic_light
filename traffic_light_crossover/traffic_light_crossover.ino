@@ -52,21 +52,14 @@ unsigned long getID(){
 void interrupt_seq(){
   
   switch(sequence){
-    //case 20:case 50:interval+=9000;interrupt=0; break;
-    case 10:case 40:interval+=5000;interrupt=0;temp2=1;Serial.println(interval);break;
-    default:return;
-  }
-}
-void interrupt_seq2(){
-  temp2=1;
-  switch(sequence){
-    //case 20:case 50:interval+=9000;interrupt=0; break;
-    case 30:case 60:interval+=5000;interrupt=0;temp2=1;Serial.println(interval);break;
+    case 50:interval+=9000;interrupt=0;temp2=1;break;
+    //case 30:case 60:interval+=5000;interrupt=0;temp2=1;Serial.println(interval);break;
     default:return;
   }
 }
 
 void passed(){
+  /*INSERT BEEPBEEP*/
   interrupt = 1;
 }
 
@@ -80,25 +73,29 @@ void loop(){
     for(i=0;i<4;i++)prev_queue[i]=queue[i];
     switch(sequence){
       case 10:
-        queue[0]=15;queue[1]=3;queue[2]=8;queue[3]=5;interval=1000;break;
+        queue[0]=PEDRED2;queue[1]=RED2;queue[2]=RED1;queue[3]=PEDRED1;interval=2000;break;
       case 20:
-        queue[0]=14;queue[1]=3;queue[2]=6;queue[3]=5;interval=9000;break;
+        queue[0]=PEDGREEN2;queue[1]=RED2;queue[2]=GREEN1;queue[3]=PEDRED1;interval=9000;break;
       case 30:
-        queue[0]=14;queue[1]=3;queue[2]=7;queue[3]=5;interval=3000;break;
+        queue[0]=PEDRED2;queue[1]=RED2;queue[2]=GREEN1;queue[3]=PEDRED1;interval=1000;break;
       case 40:
-        queue[0]=15;queue[1]=3;queue[2]=8;queue[3]=5;interval=1000;break;
+        queue[0]=PEDRED2;queue[1]=RED2;queue[2]=YELLOW1;queue[3]=PEDRED1;interval=1500;break;
       case 50:
-        queue[0]=15;queue[1]=16;queue[2]=8;queue[3]=4;interval=9000;break;
+        queue[0]=PEDRED2;queue[1]=RED2;queue[2]=RED1;queue[3]=PEDRED1;interval=2000;break;
       case 60:
-        queue[0]=15;queue[1]=17;queue[2]=8;queue[3]=4;interval=3000;break;
+        queue[0]=PEDRED2;queue[1]=GREEN2;queue[2]=RED1;queue[3]=PEDGREEN1;interval=9000;break;
+      case 70:
+        queue[0]=PEDRED2;queue[1]=GREEN2;queue[2]=RED1;queue[3]=PEDRED1;interval=1000;break;
+      case 80:
+        queue[0]=PEDRED2;queue[1]=YELLOW2;queue[2]=RED1;queue[3]=PEDRED1;interval=1500;break;
         
       default:break;//THIS SHOULD NOT BE HAPPENING
     }
-    (sequence==60)?sequence=10:sequence+=10;
+    (sequence==80)?sequence=10:sequence+=10;
     //change sequence block end
     
     //check for interrupts
-    if(interrupt)interrupt_seq2();
+    if(interrupt)interrupt_seq();
     //check for interrupts end
   
     //display changes
