@@ -4,6 +4,7 @@
 #include <MFRC522.h>
 #define SS_PIN 10
 #define RST_PIN 9
+#define BUZZER_PIN 2
 MFRC522 mfrc522(SS_PIN, RST_PIN); //...until here
 
 RTC_DS1307 RTC;
@@ -11,7 +12,7 @@ RTC_DS1307 RTC;
 int RED1 = 8, YELLOW1 = 7, GREEN1 = 6, PEDRED1 = 5, PEDGREEN1 = 4, RED2 = 3, YELLOW2 = 17, GREEN2 = 16, PEDRED2 = 15, PEDGREEN2 = 14, j = 0 , i = 0 , interrupt = 0;
 int sequence=0;
 int queue[4]={0,0,0,0}, prev_queue[4], allled[10]={RED1,YELLOW1,GREEN1,PEDRED1,PEDGREEN1,RED2,YELLOW2,GREEN2,PEDRED2,PEDGREEN2};
-unsigned long previousMillis = 0,previousMillis1 = 0;
+unsigned long previousMillis = 0,previousMillis1 = 0, buzzertime=0;
 unsigned long currentMillis = millis();
 unsigned long temp = 0; //to store transition remaining time
 bool temp2=0; // 判斷新卡是否讀取連續兩次
@@ -22,10 +23,11 @@ void setup(){
     Wire.begin();
     RTC.begin();
     if (! RTC.isrunning()) {
-    Serial.println("RTC is NOT running!");
-    // following line sets the RTC to the date & time this sketch was compiled
-    RTC.adjust(DateTime(__DATE__, __TIME__));
-  }
+      Serial.println("RTC is NOT running!");
+      // following line sets the RTC to the date & time this sketch was compiled
+      RTC.adjust(DateTime(__DATE__, __TIME__));
+    }
+    pinMode(BUZZER_PIN,OUTPUT);
     for(i=0;i<10;i++)pinMode(allled[i],OUTPUT);
     for(j=1;j>=0;j--){
       for(i=0;i<10;i++)digitalWrite(allled[i],j);
@@ -63,6 +65,8 @@ void passed(){
   Serial.println();
   Serial.print("Passed");
   Serial.println();
+  if(temp2==0)digitalWrite(BUZZER_PIN,HIGH);
+  buzzertime=millis();
   interrupt = 1;
 }
 
@@ -100,7 +104,9 @@ void loop(){
     //check for interrupts
     if(interrupt)interrupt_seq();
     //check for interrupts end
-  
+
+    if(currentMillis-buzzertime>700)digitalWrite(BUZZER_PIN,LOW);
+    
     //display changes
     for(i=0;i<4;i++)digitalWrite(prev_queue[i], 0);
     for(i=0;i<4;i++)digitalWrite(queue[i], 1);
@@ -110,6 +116,7 @@ void loop(){
     Serial.println();
   }else{
     if(interrupt)interrupt_seq();
+    if(currentMillis-buzzertime>700)digitalWrite(BUZZER_PIN,LOW);
     //UID check part 2
     if((temp2==1) && (millis()-previousMillis1 >= cooldown)){
       Serial.println("cooldown end"); // Init MFRC522 card
