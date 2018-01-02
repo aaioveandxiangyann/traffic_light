@@ -15,7 +15,7 @@ unsigned long previousMillis = 0,previousMillis1 = 0;
 unsigned long currentMillis = millis();
 unsigned long temp = 0; //to store transition remaining time
 bool temp2=0; // 判斷新卡是否讀取連續兩次
-unsigned long interval = 1000,cooldown=600;
+unsigned long interval = 1000,cooldown=60000;
 void setup(){
     Serial.begin(9600);
     SPI.begin(); // Init SPI bus
@@ -52,7 +52,7 @@ unsigned long getID(){
 void interrupt_seq(){
   
   switch(sequence){
-    case 50:interval+=9000;interrupt=0;temp2=1;break;
+    case 60:interval+=9000;interrupt=0;temp2=1;break;
     //case 30:case 60:interval+=5000;interrupt=0;temp2=1;Serial.println(interval);break;
     default:return;
   }
@@ -60,6 +60,9 @@ void interrupt_seq(){
 
 void passed(){
   /*INSERT BEEPBEEP*/
+  Serial.println();
+  Serial.print("Passed");
+  Serial.println();
   interrupt = 1;
 }
 
@@ -243,7 +246,7 @@ void loop(){
           }
         }
         //----------------------------------------
-        Serial.println("BOOP");
+        //Serial.println("BOOP");
         delay(100); //change value if you want to read cards faster
       
         mfrc522.PICC_HaltA();
