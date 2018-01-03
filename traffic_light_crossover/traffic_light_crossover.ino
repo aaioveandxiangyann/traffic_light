@@ -54,7 +54,7 @@ unsigned long getID(){
 void interrupt_seq(){
   
   switch(sequence){
-    case 60:interval+=9000;interrupt=0;temp2=1;break;
+    case 70:interval+=9000;interrupt=0;temp2=1;break;
     //case 30:case 60:interval+=5000;interrupt=0;temp2=1;Serial.println(interval);break;
     default:return;
   }
